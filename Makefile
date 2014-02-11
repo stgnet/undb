@@ -1,13 +1,13 @@
 CC=gcc
 LIBS=-lpthread
 CFLAGS=-I.
-DEPS=
+DEPS= $(wildcard *.h)
 OBJ = $(patsubst %.c,%.o,$(wildcard *.c))
 
-%.o: .c $(DEPS)
+%.o: %.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-undb: $(OBJ)
+undb: $(OBJ) $(DEPS)
 	gcc -o $@ $^ $(CFLAGS) $(LIBS)
 
 .PHONY:clean
