@@ -18,24 +18,33 @@
 
 */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <getopt.h>
+#include "html.h"
 
-#include "options.h"
-#include "httpd.h"
-
-#include "html/page.h"
-
-extern struct options options;
-
-int
-main (int argc, char **argv)
+static const char * is_entity(char c)
 {
-	page_test();
-	exit(1);
-	options_process(argc, argv);
+	switch (c)
+	{
+		case '"': return("&quot;");
+		case '\'': return("&apos;");
+		case '&': return("&amp;");
+		case '<': return("&lt;");
+		case '>': return("&gt;");
+	}
+	return 0;
+}
 
-	printf("Starting HTTPD on port %d\n",options.port);
-	httpd(NULL,options.port);
+struct html_page text(const char *text)
+{
+	struct html_page page = PAGE_INIT;
+
+	while (*text)
+	{
+		const char *start=text;
+		while (*text && !is_entity(*text)) text++;
+		if (text>start) buffer_append(&page.body, start, text-start);
+
+		if (*text)
+			buffer_add_string(&page.body, is_entity(*text++));
+	}
+	return page;
 }

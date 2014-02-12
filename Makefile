@@ -1,15 +1,15 @@
 CC=gcc
 LIBS=-lpthread
-CFLAGS=-I.
-DEPS= $(wildcard *.h)
-OBJ = $(patsubst %.c,%.o,$(wildcard *.c))
+CFLAGS=-g -I. -D_GNU_SOURCE
+DEPS= $(wildcard *.h) $(wildcard html/*.h)
+OBJ = $(patsubst %.c,%.o,$(wildcard *.c)) $(patsubst %.c,%.o,$(wildcard html/*.c))
 
 %.o: %.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 undb: $(OBJ) $(DEPS)
-	gcc -o $@ $^ $(CFLAGS) $(LIBS)
+	gcc -o $@ $(OBJ) $(CFLAGS) $(LIBS)
 
 .PHONY:clean
 clean:
-	rm -f *.o undb
+	rm -f *.o html/*.o undb 

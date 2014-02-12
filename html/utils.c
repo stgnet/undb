@@ -18,24 +18,15 @@
 
 */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <getopt.h>
+#include "html.h"
 
-#include "options.h"
-#include "httpd.h"
-
-#include "html/page.h"
-
-extern struct options options;
-
-int
-main (int argc, char **argv)
+int html_tag_dont_self_close(const char *tag)
 {
-	page_test();
-	exit(1);
-	options_process(argc, argv);
-
-	printf("Starting HTTPD on port %d\n",options.port);
-	httpd(NULL,options.port);
+	if (!strcmp(tag,"script")) return(1);
+	if (!strcmp(tag,"i")) return(1);
+	if (!strcmp(tag,"iframe")) return(1);
+	if (!strcmp(tag,"div")) return(1);
+	if (!strcmp(tag,"title")) return(1);
+	return(0);
 }
+

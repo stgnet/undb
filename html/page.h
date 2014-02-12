@@ -18,24 +18,16 @@
 
 */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <getopt.h>
+#include "buffer.h"
 
-#include "options.h"
-#include "httpd.h"
+#define PAGE_INIT { {NULL,NULL}, {NULL,NULL}, {NULL,NULL} }
 
-#include "html/page.h"
-
-extern struct options options;
-
-int
-main (int argc, char **argv)
+// HTML output page
+struct html_page
 {
-	page_test();
-	exit(1);
-	options_process(argc, argv);
+	struct fast_buffer head;
+	struct fast_buffer body;
+	struct fast_buffer tail;
+};
 
-	printf("Starting HTTPD on port %d\n",options.port);
-	httpd(NULL,options.port);
-}
+void page_test(void);

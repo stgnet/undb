@@ -18,24 +18,13 @@
 
 */
 
+#include <features.h>
 #include <stdio.h>
-#include <stdlib.h>
-#include <getopt.h>
+#include <stdarg.h>
+#include <string.h>
 
-#include "options.h"
-#include "httpd.h"
+#include "page.h"
 
-#include "html/page.h"
-
-extern struct options options;
-
-int
-main (int argc, char **argv)
-{
-	page_test();
-	exit(1);
-	options_process(argc, argv);
-
-	printf("Starting HTTPD on port %d\n",options.port);
-	httpd(NULL,options.port);
-}
+struct html_page html_tag(const char *name, const char *attributes, struct html_page content);
+int html_tag_dont_self_close(const char *tag);
+struct html_page text(const char *text);
